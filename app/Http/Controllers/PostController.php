@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception;
 use App\Post;
 use App\User;
+use App\Traits\UploadTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    use UploadTrait;
+    
     /**
      * Create a new controller instance.
      *
@@ -53,13 +57,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $post = new Post;
-
         $post->name = $request->name;
         $post->text = $request->text;
         $post->user_id = Auth::user()->id;
 
+        if ($request->has('post_image')) {
+            Log::info($request->file('post_image'));
+            $image = $request->file('post_image');
+            $name = Str::slug($request->input('name')).'_'.time();
+            $folder = '/uploads/images/';
+            $filePath = $folder . $name. '.' . $request->file('post_image')->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
+            $post->post_image = $filePath;
+        }
+
         $post->save();
-        return response()->json([], 200); 
+
+        return redirect()->action(
+            'PostController@show', ['id' => $post->id]
+        );
     }
 
     /**

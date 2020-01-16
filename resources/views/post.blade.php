@@ -10,6 +10,8 @@
                 <div class="card-header">{{$post->name}}</div>
 
                 <div class="card-body">
+                    <img src="{{$post->post_image}}" alt="альтернативный текст">
+                    <br>
                     {{$post->text}}
                     <br>
                     <br>

@@ -10,7 +10,7 @@
                 <div class="card-header">Create post</div>
 
                 <div class="card-body">
-                    <form method="post" id="ajax_form">
+                    <form method="post" id="ajax_form" enctype="multipart/form-data">
                         @csrf
                         <label for="name">Name:</label>
                         <input id="name" type="text" name="name"><br>
@@ -18,6 +18,9 @@
                         <label for="text">Text:</label>
                         <textarea id="text" type="text" name="text"></textarea><br>
 
+                        <label for="post_image" >Post Image:</label>
+                        <input id="post_image" type="file" name="post_image" accept="image/jpeg">
+                        <br>
                         <input type="submit" id="btn" value="Save">
                     </form>
                     <br>
