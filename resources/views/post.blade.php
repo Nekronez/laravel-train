@@ -10,6 +10,10 @@
                 <div class="card-header">{{$post->name}}</div>
 
                 <div class="card-body">
+                    @if (isset($post->post_image))
+                        <img src="{{$post->post_image}}">
+                        <br><br>
+                    @endif
                     {{$post->text}}
                     <br>
                     <br>
