@@ -20,7 +20,17 @@
 
                         <label for="post_image" >Post Image:</label>
                         <input id="post_image" type="file" name="post_image" accept="image/jpeg">
-                        <br>
+                        <br><br>
+                        
+                        <label for="lat">Latitude:</label>
+                        <input id="lat" type="text" name="lat"><br>
+                        <label for="lon">Longitude:</label>
+                        <input id="lon" type="text" name="lon"><br><br>
+
+                        <label>Type map:</label><br>
+                        <input name="map" type="radio" value="google" checked>Google<br>
+                        <input name="map" type="radio" value="yandex">Yandex<br><br>
+
                         <input type="submit" id="btn" value="Save">
                     </form>
                     <br>

@@ -10,8 +10,10 @@
                 <div class="card-header">{{$post->name}}</div>
 
                 <div class="card-body">
-                    <img src="{{$post->post_image}}" alt="альтернативный текст">
-                    <br>
+                    @if (isset($post->post_image))
+                        <img src="{{$post->post_image}}">
+                        <br><br>
+                    @endif
                     {{$post->text}}
                     <br>
                     <br>

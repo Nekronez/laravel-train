@@ -20,9 +20,6 @@ function sendAjaxForm(result_form, ajax_form, url) {
         type:     "POST", 
         dataType: "html", 
 		data: $("#"+ajax_form).serialize(),
-        success: function() { 
-			$('#result_form').html('OK');
-    	},
     	error: function(jqXHR, exception) {
 			$('#result_form').html('Ошибка. Данные не отправлены.');
 			var msg = '';

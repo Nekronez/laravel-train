@@ -8,15 +8,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception;
 use App\Post;
 use App\User;
-use App\Traits\UploadTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Input;
 
 class PostController extends Controller
-{
-    use UploadTrait;
-    
+{   
     /**
      * Create a new controller instance.
      *
@@ -61,14 +60,15 @@ class PostController extends Controller
         $post->text = $request->text;
         $post->user_id = Auth::user()->id;
 
-        if ($request->has('post_image')) {
-            Log::info($request->file('post_image'));
-            $image = $request->file('post_image');
+        if ($request->hasFile('post_image')) {
             $name = Str::slug($request->input('name')).'_'.time();
             $folder = '/uploads/images/';
-            $filePath = $folder . $name. '.' . $request->file('post_image')->getClientOriginalExtension();
-            $this->uploadOne($image, $folder, 'public', $name);
-            $post->post_image = $filePath;
+            Image::make(Input::file('post_image'))
+                ->resize(600, null,function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save(public_path('uploads/images/'. $name. '.jpg'));
+            $post->post_image = $folder. $name. '.jpg';
         }
 
         $post->save();
@@ -122,8 +122,21 @@ class PostController extends Controller
         $post->name = $request->name;
         $post->text = $request->text;
 
+        if ($request->hasFile('post_image')) {
+            $name = Str::slug($request->input('name')).'_'.time();
+            $folder = '/uploads/images/';
+            Image::make(Input::file('post_image'))
+                ->resize(600, null,function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save(public_path('uploads/images/'. $name. '.jpg'));
+            $post->post_image = $folder. $name. '.jpg';
+        }
         $post->save();
-        return response()->json([], 200); 
+
+        return redirect()->action(
+            'PostController@show', ['id' => $post->id]
+        );
     }
 
     /**
