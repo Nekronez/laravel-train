@@ -176,6 +176,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * My Service Providers...
+         */
+        App\Providers\GeocoderServiceProvider::class,
     ],
 
     /*
@@ -228,6 +232,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
+
+        // My Facades
+        'GeocoderService' => App\Facades\GeocoderService::class,
     ],
 
 ];

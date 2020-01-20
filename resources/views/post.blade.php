@@ -14,12 +14,13 @@
                         <img src="{{$post->post_image}}">
                         <br><br>
                     @endif
-                    {{$post->text}}
-                    <br>
-                    <br>
-                    Author: {{$user}}
-                    <br>
-                    Created at: {{$post->created_at}}
+                    {{$post->text}}<br><br>
+                    
+                    Author: {{$user}}<br>
+                    Created at: {{$post->created_at}}<br>
+                    @if (isset($post->address))
+                        Address: {{$post->address}}<br>
+                    @endif
 
                     @can('update', $post)
                         <br><br>

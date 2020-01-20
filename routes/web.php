@@ -18,10 +18,12 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 Route::get('/post', 'PostController@index');
 Route::get('/post/create', 'PostController@create');
 Route::post('/post/create', 'PostController@store');
-Route::get('/post/edit/{id}', 'PostController@edit');
-Route::post('/post/edit/{id}', 'PostController@update');
-Route::delete('/post/delete/{id}', 'PostController@destroy');
-Route::get('/post/{id}', 'PostController@show');
+Route::get('/post/edit/{id}', 'PostController@edit')->where('id', '[0-9]+');
+Route::post('/post/edit/{id}', 'PostController@update')->where('id', '[0-9]+');
+Route::delete('/post/delete/{id}', 'PostController@destroy')->where('id', '[0-9]+');
+Route::get('/post/{id}', 'PostController@show')->where('id', '[0-9]+');
+

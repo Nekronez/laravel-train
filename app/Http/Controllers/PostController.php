@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exception;
 use App\Post;
 use App\User;
+
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Input;
+
+use App\Facades\GeocoderService;
 
 class PostController extends Controller
 {   
@@ -69,6 +72,11 @@ class PostController extends Controller
                 })
                 ->save(public_path('uploads/images/'. $name. '.jpg'));
             $post->post_image = $folder. $name. '.jpg';
+        }
+
+        if($request->map == 'without'){
+            $geocoder = GeocoderService::getGeocoder($request->map);
+            $post->address = $geocoder->getAddress($request->lat, $request->lon);
         }
 
         $post->save();
@@ -132,6 +140,12 @@ class PostController extends Controller
                 ->save(public_path('uploads/images/'. $name. '.jpg'));
             $post->post_image = $folder. $name. '.jpg';
         }
+
+        if($request->map == 'without'){
+            $geocoder = GeocoderService::getGeocoder($request->map);
+            $post->address = $geocoder->getAddress($request->lat, $request->lon);
+        }
+
         $post->save();
 
         return redirect()->action(
@@ -151,5 +165,16 @@ class PostController extends Controller
         $post->delete();
 
         return response()->json([], 200); 
+    }
+
+    /**
+     * Check address for post.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkAddress()
+    {
+        $geocoder = GeocoderService::getGeocoder("yandex");
+        var_dump($geocoder->getAddress("37.597576","55.771899"));
     }
 }
